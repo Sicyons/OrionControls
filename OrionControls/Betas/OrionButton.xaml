@@ -1,0 +1,119 @@
+﻿<Button x:Class="OrionControls.OrionButton"  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Button.Resources>
+        <ResourceDictionary>
+            <Ellipse x:Key="BackgroundCircle" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Background}" Height="10" Stretch="Uniform" Width="10" />
+            <Path x:Key="BackgroundBeveledRectangle" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Background}" Height="10" Stretch="Uniform" Width="10" Data="M 0,2 L 2,0 L 8,0 L 10,2 L 10,8 L 8,10 L 2,10 L 0,8Z" />
+            <Rectangle x:Key="BackgroundRectangle" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Background}" Height="10" Stretch="Uniform" Width="10" />
+            <Path x:Key="BackgroundDiamond" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Background}" Height="10" Stretch="Uniform" Width="10" Data="M 0,5 L 5,0 L 10,5 L 5,10Z" />
+        </ResourceDictionary>
+    </Button.Resources>
+    
+    <Button.Style>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid x:Name="GridMain">
+                            <Grid.Effect>
+                                <DropShadowEffect x:Name="ButtonShadow" ShadowDepth="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=ShadowDepth}" />
+                            </Grid.Effect>
+                            <Grid.RenderTransform>
+                                <ScaleTransform x:Name="ZoomBouton" />
+                            </Grid.RenderTransform>
+
+                            <Viewbox>
+                                <ContentControl>
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="None">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="BeveledRectangle">
+                                                    <Setter Property="Content" Value="{StaticResource BackgroundBeveledRectangle}" />
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="Circle">
+                                                    <Setter Property="Content" Value="{StaticResource BackgroundCircle}" />
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="Diamond">
+                                                    <Setter Property="Content" Value="{StaticResource BackgroundDiamond}" />
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="Rectangle">
+                                                    <Setter Property="Content" Value="{StaticResource BackgroundRectangle}" />
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
+                            </Viewbox>
+                            <Viewbox>
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Content}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <ContentPresenter.Style>
+                                        <Style TargetType="ContentPresenter">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="None">
+                                                    <Setter Property="Margin" Value="0" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="BeveledRectangle">
+                                                    <Setter Property="Margin" Value="15" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="Circle">
+                                                    <Setter Property="Margin" Value="15" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="Diamond">
+                                                    <Setter Property="Margin" Value="10" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=BackgroundType}" Value="Rectangle">
+                                                    <Setter Property="Margin" Value="10" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentPresenter.Style>
+                                </ContentPresenter>
+                            </Viewbox>
+
+                            <Grid.Triggers>
+                                <EventTrigger SourceName="GridMain" RoutedEvent="Grid.MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard FillBehavior="HoldEnd">
+                                            <DoubleAnimation To="1" Duration="0:00:00:0.15" Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger SourceName="GridMain" RoutedEvent="Grid.MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard FillBehavior="HoldEnd">
+                                            <DoubleAnimation To="0.75" Duration="0:00:00:0.15" Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger SourceName="GridMain" RoutedEvent="Grid.MouseDown">
+                                    <BeginStoryboard>
+                                        <Storyboard AutoReverse="True" FillBehavior="HoldEnd">
+                                            <DoubleAnimation From="1" To="0.90" Duration="0:00:00:0.15" Storyboard.TargetName="ZoomBouton" Storyboard.TargetProperty="ScaleX" />
+                                            <DoubleAnimation From="1" To="0.90" Duration="0:00:00:0.15"  Storyboard.TargetName="ZoomBouton" Storyboard.TargetProperty="ScaleY" />
+                                            <DoubleAnimation To="1" Duration="0:00:00:0.15" Storyboard.TargetName="ButtonShadow" Storyboard.TargetProperty="ShadowDepth" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Grid.Triggers>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.50" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Button.Style>
+</Button>
